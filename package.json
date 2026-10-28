@@ -5,6 +5,9 @@
   "scripts": {
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down",
+    "server": "bun run src/server.ts",
+    "dev": "bun run --cwd web dev",
+    "build:web": "bun run --cwd web build",
     "ingest": "bun run src/ingest/ingest.ts",
     "ask": "bun run src/retrieval/ask.ts",
     "eval": "bun run eval/run-eval.ts",

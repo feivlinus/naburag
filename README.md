@@ -35,6 +35,37 @@ Optimized for accurate multilingual and German/English document retrieval, stric
 
 ---
 
+## Enterprise & Business Use Cases
+
+NabuRAG is designed for privacy-critical, highly regulated, and audit-sensitive corporate environments where proprietary data cannot leave local infrastructure and hallucinations cannot be tolerated.
+
+### 1. Legal, Risk & Regulatory Compliance (EU AI Act, GDPR, ISO/BSI)
+- **Problem**: Compliance and legal teams spend hours cross-referencing complex statutory texts (e.g., EU AI Act, GDPR/DSGVO, German BGB) and internal audit requirements. Cloud LLM tools risk leaking client memos or sensitive corporate filings.
+- **How NabuRAG solves it**: Operates completely on-premises with zero third-party data transmission. Queries return verifiable citations down to the exact section, article, or page with verbatim source quotes.
+- **Example query**: *"Welche Dokumentationspflichten gelten für Hochrisiko-KI-Systeme nach dem EU AI Act?"*
+
+### 2. Cybersecurity, SecOps & IT-Grundschutz Audits
+- **Problem**: Security analysts need to correlate national security standards (BSI IT-Grundschutz, ISO 27001, NIS2) with raw JSON vulnerability feeds (CVEs, SecOps ticket logs) and internal hardening runbooks.
+- **How NabuRAG solves it**: Native parsing of structured `.json` feeds alongside `.html` standards and `.pdf` guidelines allows analysts to query both operational ticket history and regulatory controls in one unified search.
+- **Example query**: *"How do our incident response SLAs align with the BSI IT-Grundschutz reporting requirements?"*
+
+### 3. Procurement, Vendor Contracts & EVB-IT SOW Analysis
+- **Problem**: Evaluating complex tender documents, public sector standard contracts (e.g., German EVB-IT agreements), and vendor Master Service Agreements (MSAs) across multiple `.docx` and `.pdf` files is labor-intensive and prone to missed liability clauses.
+- **How NabuRAG solves it**: Document-filtered search allows procurement teams to restrict answers to specific vendor contracts, extracting precise terms on liability limits, termination periods, and warranty obligations.
+- **Example query**: *"Welche Haftungsobergrenzen und Gewährleistungsfristen sind im aktuellen EVB-IT Dienstleistungsvertrag vereinbart?"*
+
+### 4. Engineering Knowledge Base & Internal Architecture Runbooks
+- **Problem**: Technical documentation, architecture decision records (ADRs), and post-mortem postmortems are fragmented across Markdown repos, PDFs, and internal wikis. Engineers need fast answers without exposing proprietary system designs.
+- **How NabuRAG solves it**: Deterministic paragraph-level chunking preserves code blocks, API specifications, and architectural diagrams without stripping syntax.
+- **Example query**: *"What is our standard disaster recovery protocol for multi-region database failover?"*
+
+### 5. HR Policies, Works Council (Betriebsrat) Agreements & Internal Guidelines
+- **Problem**: Employees and HR personnel frequently query company bylaws, travel expense policies, work-from-home agreements (Betriebsvereinbarungen), and benefit packages. Misinformation causes compliance violations and internal friction.
+- **How NabuRAG solves it**: **Strict Abstention Guarantee** ensures the system explicitly says *"I don't know based on the provided documents"* rather than hallucinating benefits, allowances, or employment rules that do not exist.
+- **Example query**: *"Wie hoch ist die tägliche Verpflegungspauschale bei Auslandsreisen nach Frankreich?"*
+
+---
+
 ## Architecture
 
 ```mermaid

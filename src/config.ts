@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const EnvSchema = z.object({
+  PORT: z.coerce.number().default(3000),
   POSTGRES_HOST: z.string().default("localhost"),
   POSTGRES_PORT: z.coerce.number().default(5432),
   POSTGRES_USER: z.string().default("rag"),
