@@ -1,0 +1,99 @@
+{
+  "dataset_metadata": {
+    "schema_version": "2.4.0",
+    "export_timestamp": "2026-10-28T09:15:00Z",
+    "source_system": "Enterprise-SecOps-Bridge",
+    "domain": "ITSM & Vulnerability Management"
+  },
+  "cve_advisories": [
+    {
+      "cve_id": "CVE-2026-38911",
+      "published_date": "2026-10-24T14:32:10Z",
+      "last_modified": "2026-10-27T18:05:44Z",
+      "source_authority": "BSI-CERT-Bund",
+      "vulnerability_type": "Remote Code Execution (RCE)",
+      "cvss_v31": {
+        "base_score": 9.8,
+        "severity": "CRITICAL",
+        "vector_string": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+        "attack_vector": "NETWORK",
+        "attack_complexity": "LOW",
+        "privileges_required": "NONE"
+      },
+      "affected_products": [
+        {
+          "vendor": "Apache Software Foundation",
+          "product": "Tomcat",
+          "affected_versions": ["10.1.0", "10.1.18", "11.0.0-M1"],
+          "fixed_in_version": "10.1.19"
+        },
+        {
+          "vendor": "InternalCloudCore",
+          "product": "GatewayService",
+          "affected_versions": ["<= 4.2.1"],
+          "fixed_in_version": "4.2.2"
+        }
+      ],
+      "technical_summary": "Insecure Deserialization in the HTTP/2 Header Parsing Layer allows unauthenticated remote attackers to execute arbitrary system commands via a crafted PRI request containing malformed session tokens.",
+      "remediation_guidance": "Upgrade to patch release 4.2.2 immediately or apply mitigation rule WAF-RULE-8841 on the perimeter gateway to drop malformed HTTP/2 preface frames."
+    }
+  ],
+  "support_tickets": [
+    {
+      "ticket_id": "INC-2026-90412",
+      "tenant_id": "cust-de-manufacturing-402",
+      "customer_tier": "Enterprise Gold",
+      "status": "IN_PROGRESS",
+      "priority": "P1-CRITICAL",
+      "created_at": "2026-10-28T07:42:15Z",
+      "sla_breach_deadline": "2026-10-28T11:42:15Z",
+      "sla_status": "WITHIN_LIMITS",
+      "category": "Security Incident / Infrastructure Outage",
+      "assigned_group": "SecOps-Tier3-Germany",
+      "related_cve_ids": ["CVE-2026-38911"],
+      "environment": {
+        "cluster": "prod-fra-k8s-node04",
+        "os": "Ubuntu 24.04 LTS",
+        "runtime_version": "GatewayService v4.2.0"
+      },
+      "title": "Spike in 502 Bad Gateway and unexpected root spawn in auth-service container",
+      "initial_description": "Our monitoring detected recurring HTTP 502 responses across all EU-Central endpoints starting 07:15 UTC. Automated log analysis flagged suspicious outbound connections from the auth-gateway pods to an external IP (198.51.100.44). We also observed high CPU saturation on worker nodes hosting pod auth-gateway-7b9ff-2xc99.",
+      "stack_trace_snippet": "org.springframework.security.oauth2.jwt.BadJwtException: Failed to decode token\n\tat com.internal.gateway.filter.SecurityHeaderFilter.filter(SecurityHeaderFilter.java:142)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\nCaused by: java.lang.IllegalArgumentException: Stream closed prematurely during HTTP/2 frame reconstruction\n\tat org.apache.coyote.http2.Http2Parser.readHeader(Http2Parser.java:312)",
+      "communication_history": [
+        {
+          "entry_id": 1,
+          "timestamp": "2026-10-28T07:45:00Z",
+          "author": "System Monitor (AlertBot)",
+          "author_type": "AUTOMATION",
+          "is_internal": false,
+          "content": "Automated incident generated based on PagerDuty alert ID #77291: Error rate > 12% over 5-minute rolling window."
+        },
+        {
+          "entry_id": 2,
+          "timestamp": "2026-10-28T08:05:22Z",
+          "author": "Dr. Markus Weber (Lead Architect, Customer)",
+          "author_type": "CUSTOMER",
+          "is_internal": false,
+          "content": "We noticed that this began shortly after our security scanner flagged CVE-2026-38911 on our edge nodes. Please confirm if GatewayService v4.2.0 is vulnerable and advise on hotfix availability without taking the production cluster offline."
+        },
+        {
+          "entry_id": 3,
+          "timestamp": "2026-10-28T08:30:10Z",
+          "author": "Elena Rostova (SecOps Tier 3)",
+          "author_type": "ENGINEER",
+          "is_internal": true,
+          "content": "Internal check: Host auth-gateway-7b9ff-2xc99 has indeed been compromised. Forensic artifacts show binary execution in /tmp. Rolling back cluster ingress and applying WAF rule WAF-RULE-8841. Deploying v4.2.2 canary rollout to prod-fra-k8s."
+        },
+        {
+          "entry_id": 4,
+          "timestamp": "2026-10-28T08:45:00Z",
+          "author": "Elena Rostova (SecOps Tier 3)",
+          "author_type": "ENGINEER",
+          "is_internal": false,
+          "content": "Hello Markus, GatewayService v4.2.0 is subject to CVE-2026-38911. We have activated edge mitigation filter WAF-RULE-8841 on your ingress layer which stops the exploit traffic immediately. The permanent patched image (v4.2.2) is ready in our registry and will be scheduled for rolling restart across your worker nodes at 09:30 UTC."
+        }
+      ],
+      "tags": ["cve-2026-38911", "rce", "waf-mitigation", "http2", "critical-incident"]
+    }
+  ]
+}

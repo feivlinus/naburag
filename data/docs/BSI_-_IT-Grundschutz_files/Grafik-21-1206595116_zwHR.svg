@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="74" height="74" version="1.1" viewBox="0 0 19.579 19.579" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(0 -277.42)">
+  <circle cx="9.7896" cy="286.15" r="8.7312" fill="#e5eef8" stroke-width=".37042"/>
+ </g>
+ <g transform="matrix(1.2091 0 0 1.2106 37.724 -23.465)" fill="none" stroke-miterlimit="10" stroke-width=".82654">
+  <g stroke="#004f80">
+   <g stroke-width=".30169">
+    <path class="st0" d="m-27.995 30.319h1.1007z"/>
+    <path class="st0" d="m-27.995 31.404h1.1007z"/>
+    <rect class="st0" x="-29.072" y="25.43" width="3.2544" height="9.2234"/>
+    <path class="st0" d="m-26.902 33.028c0 0.29898-0.24342 0.5424-0.5424 0.5424s-0.5424-0.24342-0.5424-0.5424c0-0.29898 0.24342-0.5424 0.5424-0.5424s0.5424 0.24342 0.5424 0.5424z"/>
+    <rect class="st0" x="-27.987" y="26.446" width="1.0848" height="2.7834"/>
+    <path class="st0" d="m-23.992 31.213 1.0636 0.28575z"/>
+    <path class="st0" d="m-23.709 30.166 1.0636 0.28575z"/>
+   </g>
+   <polygon class="st0" transform="matrix(.26458 0 0 .26458 -52.588 3.231)" points="101.22 116.64 112.83 119.76 121.7 86.87 112.83 119.76" stroke-width="1.1402"/>
+   <polygon class="st1" transform="matrix(.26458 0 0 .26458 -52.588 3.231)" points="121.68 86.04 110.03 82.9 101.2 115.65 110.03 82.9" stroke-linejoin="round" stroke-width="1.1402"/>
+  </g>
+  <path class="st0" d="m-23.359 33.068c-0.07673 0.2884-0.37571 0.46038-0.6641 0.38365-0.2884-0.07673-0.46038-0.37571-0.38365-0.6641 0.07673-0.2884 0.37571-0.46038 0.6641-0.38365 0.29104 0.07673 0.46302 0.37571 0.38364 0.6641z" stroke="#03b8f2" stroke-width=".30169"/>
+  <g stroke="#004f80" stroke-width=".30169">
+   <rect class="st0" transform="rotate(15.081)" x="-15.034" y="31.424" width="1.0848" height="2.7835"/>
+   <path class="st0" d="m-19.317 30.319h1.1007z"/>
+   <path class="st0" d="m-19.317 31.404h1.1007z"/>
+   <rect class="st0" x="-20.393" y="25.43" width="3.2544" height="9.2234"/>
+   <path class="st0" d="m-18.224 33.028c0 0.29898-0.24342 0.5424-0.5424 0.5424s-0.5424-0.24342-0.5424-0.5424c0-0.29898 0.24342-0.5424 0.5424-0.5424s0.5424 0.24342 0.5424 0.5424z"/>
+   <rect class="st0" x="-19.309" y="26.446" width="1.0848" height="2.7834"/>
+  </g>
+ </g>
+</svg>
