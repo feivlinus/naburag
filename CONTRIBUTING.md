@@ -8,7 +8,7 @@ To ensure project stability, security, and deterministic reproducibility, all co
 
 ## Code of Conduct & Permissions
 
-1. **Direct Pushes Are Disabled**: No contributor (including maintainers) should push directly to the `main` branch.
+1. **Direct Pushes Are Disabled**: No contributor (including maintainers) should push directly to the `master` branch.
 2. **Pull Requests Only**: All proposed changes, bug fixes, and feature additions must be submitted via Pull Requests from a topic branch or personal fork.
 3. **Maintainer Review & Approval**: Every Pull Request requires at least one review and approval by repository maintainers prior to merge.
 4. **CI Green Requirement**: Automated test suites and TypeScript type checks must pass before any pull request can be merged.

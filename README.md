@@ -292,7 +292,7 @@ docker compose exec app bun run --cwd web build
 ## Repository Protection & Governance
 
 This repository is configured with professional open-source governance:
-- **Protected `main` Branch**: Direct pushes to `main` are restricted. All modifications require Pull Requests and passing CI status checks.
+- **Protected `master` Branch**: Direct pushes to `master` are restricted. All modifications require Pull Requests and passing CI status checks.
 - **Automated CI Checks**: Every PR triggers `.github/workflows/ci.yml`, running full TypeScript compilation and all 32 tests against live PostgreSQL and Qdrant instances.
 - **Code Standards**: See [CONTRIBUTING.md](file:///CONTRIBUTING.md) and [SECURITY.md](file:///SECURITY.md).
 
