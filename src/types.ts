@@ -17,12 +17,22 @@ export interface Citation {
   source_file: string;
   section_number: number;
   heading: string;
+  quote_or_reason?: string;
 }
 
 export interface RagAnswer {
   abstained: boolean;
   answer: string;
   citations: Citation[];
+}
+
+export interface RetrievedChunk extends ChunkPayload {
+  score: number;
+}
+
+export interface RagResponse extends RagAnswer {
+  retrieved_chunks: RetrievedChunk[];
+  latency_ms?: number;
 }
 
 export interface EvalCase {

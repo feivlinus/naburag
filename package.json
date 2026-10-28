@@ -6,6 +6,8 @@
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down",
     "ingest": "bun run src/ingest/ingest.ts",
+    "ask": "bun run src/retrieval/ask.ts",
+    "eval": "bun run eval/run-eval.ts",
     "test": "bun test"
   },
   "dependencies": {

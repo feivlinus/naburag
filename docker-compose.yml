@@ -14,15 +14,25 @@ services:
       POSTGRES_PASSWORD: ragpassword
       POSTGRES_DB: ragdb
       QDRANT_URL: http://qdrant:6333
-      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_BASE_URL: http://ollama:11434
       EMBEDDING_MODEL: bge-m3
-      LLM_BASE_URL: http://host.docker.internal:11434
+      LLM_BASE_URL: http://ollama:11434
       LLM_MODEL: llama3.2
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
       - postgres
       - qdrant
+      - ollama
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: local-rag-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
 
   qdrant:
     image: qdrant/qdrant:latest
@@ -50,3 +60,4 @@ services:
 volumes:
   qdrant_data:
   pg_data:
+  ollama_data:
