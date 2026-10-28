@@ -1,0 +1,70 @@
+[
+  {
+    "id": 1,
+    "question": "Welche Risikoklassen unterscheidet der EU AI Act und welche Pflichten gelten für Hochrisiko-KI?",
+    "ground_truth_doc": "legal_memo_eu_ai_act_compliance_mandant.md",
+    "expected_answer": "Der EU AI Act unterscheidet unannehmbares Risiko, hohes Risiko und geringes/minimales Risiko. Hochrisiko-KI erfordert Risikomanagement, Datenqualitätsprüfungen, Dokumentation und menschliche Aufsicht.",
+    "should_abstain": false
+  },
+  {
+    "id": 2,
+    "question": "Welche Regelungen trifft der EVB-IT Dienstleistungsvertrag bezüglich der Vergütung nach Aufwand?",
+    "ground_truth_doc": "EVB_IT_Dienstleistung_Langfassung.docx",
+    "expected_answer": "Bei Vergütung nach Aufwand sind erbrachte Leistungen nach Stundensätzen oder Tagessätzen mit Tätigkeitsnachweisen abzurechnen.",
+    "should_abstain": false
+  },
+  {
+    "id": 3,
+    "question": "Was ist das Ziel des IT-Grundschutzes laut dem Bundesamt für Sicherheit in der Informationstechnik?",
+    "ground_truth_doc": "BSI_-_IT-Grundschutz.htm",
+    "expected_answer": "Ziel des IT-Grundschutzes ist es, durch standardisierte Sicherheitsmaßnahmen ein angemessenes und ausreichendes Sicherheitsniveau für IT-Systeme und Informationen zu erreichen.",
+    "should_abstain": false
+  },
+  {
+    "id": 4,
+    "question": "Which CVE vulnerability or security ticket is documented with high severity in the secops feed?",
+    "ground_truth_doc": "secops_tickets-cve_feed.json",
+    "expected_answer": "SecOps tickets report vulnerabilities such as CVE records with severity, impact analysis, and remediation steps.",
+    "should_abstain": false
+  },
+  {
+    "id": 5,
+    "question": "Als was findet sich Gregor Samsa eines Morgens in seinem Bett verwandelt?",
+    "ground_truth_doc": "Die_Verwandlung_Kafka.txt",
+    "expected_answer": "Gregor Samsa findet sich zu einem ungeheuren Ungeziefer verwandelt.",
+    "should_abstain": false
+  },
+  {
+    "id": 6,
+    "question": "Welche Grundsätze für die Verarbeitung personenbezogener Daten legt Artikel 5 der DSGVO fest?",
+    "ground_truth_doc": "DSVGO.pdf",
+    "expected_answer": "Artikel 5 DSGVO nennt Rechtmäßigkeit, Verarbeitung nach Treu und Glauben, Transparenz, Zweckbindung, Datenminimierung, Richtigkeit, Speicherbegrenzung, Integrität und Vertraulichkeit sowie Rechenschaftspflicht.",
+    "should_abstain": false
+  },
+  {
+    "id": 7,
+    "question": "Wann beginnt die Rechtsfähigkeit des Menschen nach dem Bürgerlichen Gesetzbuch?",
+    "ground_truth_doc": "BGB.pdf",
+    "expected_answer": "Die Rechtsfähigkeit des Menschen beginnt mit der Vollendung der Geburt (§ 1 BGB).",
+    "should_abstain": false
+  },
+  {
+    "id": 8,
+    "question": "Welche Sanktionen oder Bußgelder drohen bei Verstößen gegen verbotene KI-Praktiken nach dem EU AI Act?",
+    "ground_truth_doc": "legal_memo_eu_ai_act_compliance_mandant.md",
+    "expected_answer": "Bei Verstößen gegen verbotene KI-Praktiken drohen Bußgelder von bis zu 35 Millionen Euro oder 7 % des weltweiten Jahresumsatzes.",
+    "should_abstain": false
+  },
+  {
+    "id": 9,
+    "question": "Wie lautet das traditionelle Rezept für neapolitanische Pizza Margherita mit 72 Stunden kalter Teigführung?",
+    "expected_answer": "Information nicht in den Dokumenten enthalten.",
+    "should_abstain": true
+  },
+  {
+    "id": 10,
+    "question": "What are the latest James Webb Space Telescope observations concerning dark matter density profiles in galaxy GN-z11?",
+    "expected_answer": "Information not contained in provided documents.",
+    "should_abstain": true
+  }
+]

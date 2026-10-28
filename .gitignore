@@ -1,2 +1,27 @@
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Bun & Logs
+bun.lockb
+*.log
+
+# Build outputs & Cache
+dist/
+build/
+.cache/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Agent hooks
 .agents/hooks.json
 .cursor/hooks.json
