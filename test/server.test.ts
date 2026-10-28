@@ -9,8 +9,24 @@ describe("Bun HTTP Server REST API", () => {
   let server: ReturnType<typeof createServer>;
   let baseUrl: string;
   const testDocsDir = path.resolve("/tmp/rag-server-test-docs");
+  const originalFetch = globalThis.fetch;
 
   beforeAll(async () => {
+    // Mock Ollama embedding calls so tests do not depend on an external Ollama daemon
+    globalThis.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
+      const urlStr = url.toString();
+      if (urlStr.includes("/api/embed")) {
+        const body = typeof init?.body === "string" ? JSON.parse(init.body) : {};
+        const inputs = Array.isArray(body.input) ? body.input : [body.input || ""];
+        const embeddings = inputs.map(() => new Array(1024).fill(0.05));
+        return new Response(JSON.stringify({ embeddings }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      return originalFetch(url, init);
+    }) as any;
+
     await initPostgres();
     await initQdrant();
     await fs.mkdir(testDocsDir, { recursive: true });
@@ -61,6 +77,7 @@ describe("Bun HTTP Server REST API", () => {
   });
 
   afterAll(async () => {
+    globalThis.fetch = originalFetch;
     server.stop(true);
     await fs.rm(testDocsDir, { recursive: true, force: true });
   });

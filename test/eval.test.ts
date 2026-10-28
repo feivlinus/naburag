@@ -1,9 +1,12 @@
-import { describe, it, expect } from "bun:test";
-import { sql } from "../src/db/postgres";
+import { describe, it, expect, beforeAll } from "bun:test";
+import { sql, initPostgres } from "../src/db/postgres";
 import { loadGoldenSet, runGoldenEvaluation } from "../eval/run-eval";
 import type { EvalCase } from "../src/types";
 
 describe("Golden Set Evaluation Suite", () => {
+  beforeAll(async () => {
+    await initPostgres();
+  });
   it("loads and validates the 10-question golden dataset", async () => {
     const goldenCases = await loadGoldenSet();
 
