@@ -24,7 +24,7 @@
 
 Most generative AI demos rely on heavy wrapper frameworks, lack test coverage, and suffer from unpredictable latency and hallucinations. 
 
-**NabuRAG** was engineered from first principles to demonstrate **senior-level AI systems and software engineering**:
+**NabuRAG** was engineered from first principles to demonstrate **production-grade AI software engineering and full-stack systems design**:
 - **Zero Framework Bloat**: Pure TypeScript with native `fetch` and direct client drivers. Zero reliance on LangChain, LlamaIndex, or third-party orchestrators.
 - **Strict Grounding & Verifiable Citations**: LLM responses are constrained via **Zod JSON Schema** (`z.toJSONSchema()`). Answers must cite exact source files, sections/pages, and verbatim excerpts, or explicitly **abstain** when evidence is missing.
 - **Deterministic & Idempotent Ingestion**: Chunks receive deterministic RFC 4122 **UUIDv5** identifiers based on content namespace. SHA-256 hashing prevents duplicate embeddings and guarantees atomic updates across both vector and relational stores.
@@ -230,17 +230,27 @@ bun install
 bun install --cwd web
 ```
 
-### 3. Environment Configuration
+### 3. Environment Configuration & Hardware Acceleration
 ```bash
 cp .env.example .env
 ```
-*(Default settings connect seamlessly to local Docker containers and local Ollama).*
+Select your hardware acceleration target in `.env` via `COMPOSE_PROFILES`:
+```bash
+# Options: nvidia | rocm | cpu
+COMPOSE_PROFILES=nvidia
+```
+
+| Profile | Hardware Requirement | Latency / Query | Description |
+| :--- | :--- | :--- | :--- |
+| **`nvidia`** | NVIDIA GPU (RTX 30/40-series, RTX / GTX / Tesla) + WSL2 or NVIDIA Container Toolkit | **< 1–2s** | Full CUDA acceleration with VRAM offload (FlashAttention on Ampere / Ada Lovelace such as RTX 4080 / 4090) |
+| **`rocm`** | AMD Radeon GPU with ROCm kernel drivers | **< 2–3s** | AMD ROCm container image (`ollama:rocm`) with `/dev/kfd` and `/dev/dri` |
+| **`cpu`** | Standard multi-core CPU (Zero driver dependencies) | ~15–30s | Portable CPU fallback for CI runners and environments lacking dedicated GPUs |
 
 ### 4. Start Infrastructure Containers
 ```bash
 bun run infra:up
 ```
-Starts PostgreSQL 16 (`:5432`) and Qdrant (`:6333`) with health checks and persistent Docker volumes.
+Starts PostgreSQL 16 (`:5432`), Qdrant (`:6333`), and Ollama (`:11434`) matching your selected hardware acceleration profile with health checks and persistent Docker volumes.
 
 ### 5. Ingest Documents
 Place your files in `data/docs/` and run the ingestion engine:
@@ -300,12 +310,12 @@ This repository is configured with professional open-source governance:
 
 ## Author & Contact
 
-**Felix** — *Senior AI & Full-Stack Systems Engineer*
+**Felix** — *AI Software Engineer & Full-Stack Webdeveloper*
 
 - **GitHub**: [@feivlinus](https://github.com/feivlinus)
 - **Repository**: [https://github.com/feivlinus/naburag](https://github.com/feivlinus/naburag)
 
-*Open to senior roles in AI Systems Engineering, Backend Architecture, and Technical Leadership.*
+*Open to roles in Fullstack Web Development, AI Software Engineering, and Systems Architecture.*
 
 ---
 
