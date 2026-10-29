@@ -1,0 +1,2 @@
+# Sample documents for ingestion (incl. a saved web page) are not project code
+data/docs/** linguist-vendored
