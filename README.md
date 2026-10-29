@@ -144,7 +144,7 @@ flowchart TD
 | **Vector Database** | [Qdrant](https://qdrant.tech/) (Docker) | Vector database for 1024-dimensional dense vectors with HNSW indexing (`:6333`) |
 | **Relational Database** | [PostgreSQL 16](https://www.postgresql.org/) (Docker) | Relational storage for documents, chunk metadata, and golden evaluation runs (`:5432`) |
 | **Embedding Model** | `bge-m3` via [Ollama](https://ollama.com/) | 1024-dim state-of-the-art multilingual embeddings (German/English) |
-| **LLM Inference** | Ollama / OpenRouter | Local (`qwen2.5:7b-instruct`) or remote inference with strict JSON schema enforcement |
+| **LLM Inference** | Ollama / OpenRouter | Local (`llama3.2`) or remote inference with strict JSON schema enforcement |
 | **Frontend SPA** | React 19 + Vite + Tailwind + shadcn/ui | Clean, responsive web dashboard for querying, upload management, and benchmark visualization |
 | **CI / Automation** | GitHub Actions | Automated build, multi-service testing, and type checks on every push and PR |
 
@@ -215,7 +215,7 @@ Pull the multilingual embedding and generation models:
 ollama pull bge-m3
 
 # Instruction-tuned generation model
-ollama pull qwen2.5:7b-instruct
+ollama pull llama3.2
 ```
 
 ### 2. Clone & Install
@@ -304,7 +304,7 @@ docker compose exec app bun run --cwd web build
 This repository is configured with professional open-source governance:
 - **Protected `master` Branch**: Direct pushes to `master` are restricted. All modifications require Pull Requests and passing CI status checks.
 - **Automated CI Checks**: Every PR triggers `.github/workflows/ci.yml`, running full TypeScript compilation and all 32 tests against live PostgreSQL and Qdrant instances.
-- **Code Standards**: See [CONTRIBUTING.md](file:///CONTRIBUTING.md) and [SECURITY.md](file:///SECURITY.md).
+- **Code Standards**: See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
 
 ---
 
@@ -321,4 +321,4 @@ This repository is configured with professional open-source governance:
 
 ## License
 
-This project is licensed under the [MIT License](file:///LICENSE).
+This project is licensed under the [MIT License](LICENSE).

@@ -27,7 +27,7 @@ jobs:
           --health-retries 5
 
       qdrant:
-        image: qdrant/qdrant:latest
+        image: qdrant/qdrant:v1.20.0
         ports:
           - 6333:6333
 
@@ -38,7 +38,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest
+          bun-version: 1.4.4
 
       - name: Install root dependencies
         run: bun install --frozen-lockfile

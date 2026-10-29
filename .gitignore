@@ -25,3 +25,4 @@ Thumbs.db
 # Agent hooks
 .agents/hooks.json
 .cursor/hooks.json
+.claude/settings.local.json
