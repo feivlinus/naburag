@@ -14,5 +14,6 @@
 
 ## Git Workflow & Branching Guidelines
 - **Primary / Default Branch**: The primary branch is **`master`**. Never use or create `main`.
-- **Branching & PR Requirement**: NEVER commit or push directly to `master`. Always create a new topic branch (e.g. `feat/<name>`, `fix/<name>`), push the branch, and merge via Pull Request into `master`.
+- **Branching & PR Requirement**: NEVER commit or push directly to `master`. Always create a new topic branch (e.g. `feat/<name>`, `fix/<name>`), push the branch, and open a Pull Request into `master`.
+- **Merge Prohibition**: **NEVER merge pull requests**. Only the human user is allowed to merge. The agent is strictly limited to creating the PR and sharing the URL; never run `gh pr merge` or `git merge` into `master`.
 
