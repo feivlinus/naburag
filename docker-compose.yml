@@ -3,7 +3,7 @@ services:
     image: oven/bun:latest
     container_name: local-rag-app
     restart: unless-stopped
-    command: sleep infinity
+    command: sh -c "bun install && bun install --cwd web && bun run build:web && bun run src/server.ts"
     working_dir: /app
     volumes:
       - .:/app
