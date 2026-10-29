@@ -4,8 +4,8 @@
 
 ![CI](https://github.com/feivlinus/naburag/actions/workflows/ci.yml/badge.svg)
 ![Tests](https://img.shields.io/badge/Tests-32_Passed-success?logo=checkmarx&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript&logoColor=white)
-![Bun](https://img.shields.io/badge/Bun-v1.2+-000000?logo=bun&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript&logoColor=white)
+![Bun](https://img.shields.io/badge/Bun-1.4-000000?logo=bun&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 ![Qdrant](https://img.shields.io/badge/Vector_DB-Qdrant-DC2626?logo=qdrant&logoColor=white)
@@ -26,7 +26,7 @@ Most generative AI demos rely on heavy wrapper frameworks, lack test coverage, a
 
 **NabuRAG** was engineered from first principles to demonstrate **production-grade AI software engineering and full-stack systems design**:
 - **Zero Framework Bloat**: Pure TypeScript with native `fetch` and direct client drivers. Zero reliance on LangChain, LlamaIndex, or third-party orchestrators.
-- **Strict Grounding & Verifiable Citations**: LLM responses are constrained via **Zod JSON Schema** (`z.toJSONSchema()`). Answers must cite exact source files, sections/pages, and verbatim excerpts, or explicitly **abstain** when evidence is missing.
+- **Strict Grounding & Verifiable Citations**: LLM responses are constrained via **Zod JSON Schema** (`zod-to-json-schema`). Answers must cite exact source files, sections/pages, and verbatim excerpts, or explicitly **abstain** when evidence is missing.
 - **Deterministic & Idempotent Ingestion**: Chunks receive deterministic RFC 4122 **UUIDv5** identifiers based on content namespace. SHA-256 hashing prevents duplicate embeddings and guarantees atomic updates across both vector and relational stores.
 - **Enterprise Multilingual Retrieval**: Powered by **`bge-m3`** (1024 dimensions, Cosine distance) running on local Ollama, excelling at technical and regulatory German/English corpora.
 - **Polyglot Persistence**: Clear separation of concerns — **Qdrant** for high-dimensional vector search with payload filtering; **PostgreSQL 16** with foreign-key cascades for document metadata, chunk tracking, and benchmark evaluation runs.
@@ -42,7 +42,7 @@ Enterprise production systems demand microsecond predictability, high reliabilit
 - Volatile dependency churn and breaking API updates.
 - Inflexible prompt wrappers that complicate auditability and compliance.
 
-NabuRAG uses a lightweight, transparent client layer with native `fetch`, connecting directly to Ollama or OpenRouter/OpenAI-compatible APIs. Schema enforcement is handled via compile-time and runtime **Zod** models, achieving zero-overhead type safety and predictable execution.
+NabuRAG uses a lightweight, transparent client layer with native `fetch`, connecting directly to Ollama's embedding API and any OpenAI-compatible `/v1/chat/completions` endpoint (`LLM_BASE_URL`). Schema enforcement is handled via compile-time and runtime **Zod** models, achieving zero-overhead type safety and predictable execution.
 
 ### 2. Deterministic Ingestion & Idempotency
 - **UUIDv5 Chunk Identification**: Chunk IDs are computed as `UUIDv5(NAMESPACE, `${source_file}:s${section_num}:c${chunk_idx}`)`. Running ingestion multiple times produces identical IDs, preventing duplicate vector growth.
@@ -129,7 +129,7 @@ flowchart TD
         UserQuery["User Question (CLI / Web UI)"] --> QueryEmbed["Embed Query via bge-m3"]
         QueryEmbed --> TopK["Qdrant Top-5 Search<br/>(Optional source_file filter)"]
         TopK --> PromptContext["Numbered Context Assembly<br/>[1] source (heading, page)"]
-        PromptContext --> LLM["LLM (Ollama / OpenRouter)<br/>+ Zod JSON Schema Enforcement"]
+        PromptContext --> LLM["LLM (Ollama, OpenAI-compatible)<br/>+ Zod JSON Schema Enforcement"]
         LLM --> Response["Grounded Answer + Citations<br/>or Explicit Abstention"]
     end
 ```
@@ -140,11 +140,11 @@ flowchart TD
 
 | Layer | Technology | Purpose |
 | :--- | :--- | :--- |
-| **Engine / Runtime** | [Bun](https://bun.sh/) (v1.2+) | Fast JS/TS runtime, test runner, package manager, and microsecond HTTP server (`Bun.serve`) |
+| **Engine / Runtime** | [Bun](https://bun.sh/) (1.4, `oven/bun` container) | Fast JS/TS runtime, test runner, package manager, and microsecond HTTP server (`Bun.serve`) |
 | **Vector Database** | [Qdrant](https://qdrant.tech/) (Docker) | Vector database for 1024-dimensional dense vectors with HNSW indexing (`:6333`) |
 | **Relational Database** | [PostgreSQL 16](https://www.postgresql.org/) (Docker) | Relational storage for documents, chunk metadata, and golden evaluation runs (`:5432`) |
 | **Embedding Model** | `bge-m3` via [Ollama](https://ollama.com/) | 1024-dim state-of-the-art multilingual embeddings (German/English) |
-| **LLM Inference** | Ollama / OpenRouter | Local (`llama3.2`) or remote inference with strict JSON schema enforcement |
+| **LLM Inference** | Ollama (OpenAI-compatible API) | Local `llama3.2` by default, swappable via `LLM_BASE_URL` / `LLM_MODEL`, with strict JSON schema enforcement |
 | **Frontend SPA** | React 19 + Vite + Tailwind + shadcn/ui | Clean, responsive web dashboard for querying, upload management, and benchmark visualization |
 | **CI / Automation** | GitHub Actions | Automated build, multi-service testing, and type checks on every push and PR |
 
@@ -158,7 +158,13 @@ naburag/
 │   ├── workflows/ci.yml       # GitHub Actions CI workflow (PostgreSQL + Qdrant + Bun test)
 │   └── pull_request_template.md
 ├── data/
-│   └── docs/                  # Ingested documents (.pdf, .docx, .html, .md, .txt, .json)
+│   └── docs/                  # Sample corpus (BGB, DSGVO, BSI, EVB-IT, ...) in all supported formats
+├── docs/
+│   ├── PROJECT_SPEC.md        # Product specification
+│   └── DECISIONS.md           # Architecture decision log (newest first)
+├── openspec/
+│   ├── specs/                 # Current capability specs (ingestion, retrieval, API, dashboard, ...)
+│   └── changes/archive/       # Completed spec-driven changes
 ├── eval/
 │   ├── golden.json            # 10 QA benchmark pairs (8 answerable + 2 unanswerable)
 │   └── run-eval.ts            # Golden set evaluation test runner
@@ -192,7 +198,9 @@ naburag/
 │   │   ├── components/        # AskTab, DocsTab, EvalTab, and UI primitives
 │   │   └── api.ts             # Typed REST API client
 │   └── vite.config.ts         # Dev server with /api proxy to Bun
-├── docker-compose.yml         # Container definitions for Qdrant, PostgreSQL, and Ollama
+├── docker-compose.yml         # app (Bun), Qdrant, PostgreSQL, and per-profile Ollama services
+├── .env.example               # Hardware profile + connection settings
+├── AGENTS.md / CLAUDE.md      # Rules for AI coding agents working in this repo
 ├── CONTRIBUTING.md            # Open-source contribution guidelines & branching rules
 ├── SECURITY.md                # Vulnerability disclosure protocol
 ├── LICENSE                    # MIT License
@@ -204,37 +212,19 @@ naburag/
 
 ## Quickstart & Local Setup
 
+Everything runs in Docker Compose: Bun, Ollama, Qdrant, and PostgreSQL. You don't need Bun or Ollama installed on the host.
+
 ### 1. Prerequisites
-- **[Bun](https://bun.sh/)** (v1.2 or higher)
 - **[Docker Desktop](https://www.docker.com/)** or Docker Engine with Docker Compose
-- **[Ollama](https://ollama.com/)** running locally on port `11434` (or configure OpenRouter/OpenAI in `.env`)
+- For GPU acceleration: NVIDIA Container Toolkit (or WSL2 GPU support), or AMD ROCm drivers
 
-Pull the multilingual embedding and generation models:
-```bash
-# High-performance multilingual embedding model (1024 dimensions)
-ollama pull bge-m3
-
-# Instruction-tuned generation model
-ollama pull llama3.2
-```
-
-### 2. Clone & Install
+### 2. Clone & Configure
 ```bash
 git clone https://github.com/feivlinus/naburag.git
 cd naburag
-
-# Install root dependencies
-bun install
-
-# Install web dashboard dependencies
-bun install --cwd web
-```
-
-### 3. Environment Configuration & Hardware Acceleration
-```bash
 cp .env.example .env
 ```
-Select your hardware acceleration target in `.env` via `COMPOSE_PROFILES`:
+Select your hardware acceleration target in `.env` via `COMPOSE_PROFILES` (default: `cpu`):
 ```bash
 # Options: nvidia | rocm | cpu
 COMPOSE_PROFILES=nvidia
@@ -246,37 +236,49 @@ COMPOSE_PROFILES=nvidia
 | **`rocm`** | AMD Radeon GPU with ROCm kernel drivers | **< 2–3s** | AMD ROCm container image (`ollama:rocm`) with `/dev/kfd` and `/dev/dri` |
 | **`cpu`** | Standard multi-core CPU (Zero driver dependencies) | ~15–30s | Portable CPU fallback for CI runners and environments lacking dedicated GPUs |
 
-### 4. Start Infrastructure Containers
+### 3. Start the Stack
 ```bash
-bun run infra:up
+docker compose up -d
 ```
-Starts PostgreSQL 16 (`:5432`), Qdrant (`:6333`), and Ollama (`:11434`) matching your selected hardware acceleration profile with health checks and persistent Docker volumes.
+Starts PostgreSQL 16 (`:5432`), Qdrant (`:6333`), the Ollama service for your profile (`:11434`), and the `app` container. On startup, `app` installs dependencies, builds the web dashboard, and serves the API and UI on **[http://localhost:3000](http://localhost:3000)**.
+
+### 4. Pull the Models
+Run this once per machine. The models persist in the `ollama_data` volume. Use the service that matches your profile (`ollama-nvidia`, `ollama-rocm`, or `ollama-cpu`):
+```bash
+# Multilingual embedding model (1024 dimensions)
+docker compose exec ollama-cpu ollama pull bge-m3
+
+# Instruction-tuned generation model
+docker compose exec ollama-cpu ollama pull llama3.2
+```
 
 ### 5. Ingest Documents
-Place your files in `data/docs/` and run the ingestion engine:
+Place your files in `data/docs/` (a sample corpus is included) and run the ingestion engine:
 ```bash
 # Ingest new and modified documents (SHA-256 cached)
-bun run ingest
+docker compose exec app bun run ingest
 
 # Force complete re-indexing
-bun run ingest --force
+docker compose exec app bun run ingest --force
 ```
+You can also upload documents from the dashboard.
 
 ### 6. Query via CLI
 ```bash
-bun run ask "What is the notice period according to EVB-IT?"
+docker compose exec app bun run ask "What is the notice period according to EVB-IT?"
 ```
+Or use the **Ask** tab at [http://localhost:3000](http://localhost:3000).
 
 ### 7. Run the Golden Benchmark Suite
 Evaluate retrieval accuracy, citation fidelity, and abstention performance against 10 ground-truth QA pairs:
 ```bash
-bun run eval
+docker compose exec app bun run eval
 ```
 
-### 8. Run the Web Dashboard & API
+### 8. Frontend Development (optional)
+For hot reload, run the Vite dev server inside the container. It proxies `/api` to the Bun server on `:3000`:
 ```bash
-# Runs Bun backend (:3000) and Vite React frontend (:5173) concurrently
-bun run dev
+docker compose exec app bun run dev --host
 ```
 Open **[http://localhost:5173](http://localhost:5173)** in your browser.
 
@@ -304,6 +306,7 @@ docker compose exec app bun run --cwd web build
 This repository is configured with professional open-source governance:
 - **Protected `master` Branch**: Direct pushes to `master` are restricted. All modifications require Pull Requests and passing CI status checks.
 - **Automated CI Checks**: Every PR triggers `.github/workflows/ci.yml`, running full TypeScript compilation and all 32 tests against live PostgreSQL and Qdrant instances.
+- **Spec-Driven Development**: Features go through [OpenSpec](https://github.com/Fission-AI/OpenSpec) (propose, apply, archive). The current specs are in `openspec/specs/`, and design decisions are logged in [docs/DECISIONS.md](docs/DECISIONS.md).
 - **Code Standards**: See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
 
 ---
