@@ -1,6 +1,6 @@
 services:
   app:
-    image: oven/bun:latest
+    image: oven/bun:1.4.4
     container_name: local-rag-app
     restart: unless-stopped
     command: sleep infinity
@@ -24,12 +24,24 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
-      - postgres
-      - qdrant
+      postgres:
+        condition: service_started
+      qdrant:
+        condition: service_started
+      # Only the Ollama service of the active COMPOSE_PROFILES exists; the others are skipped.
+      ollama-nvidia:
+        condition: service_started
+        required: false
+      ollama-rocm:
+        condition: service_started
+        required: false
+      ollama-cpu:
+        condition: service_started
+        required: false
 
   # Hardware Acceleration Profile: NVIDIA GPU (CUDA + FlashAttention)
   ollama-nvidia:
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.40.4
     container_name: local-rag-ollama-nvidia
     profiles: ["nvidia"]
     ports:
@@ -54,7 +66,7 @@ services:
 
   # Hardware Acceleration Profile: AMD GPU (ROCm)
   ollama-rocm:
-    image: ollama/ollama:rocm
+    image: ollama/ollama:0.40.4-rocm
     container_name: local-rag-ollama-rocm
     profiles: ["amd", "rocm"]
     ports:
@@ -75,7 +87,7 @@ services:
 
   # Hardware Acceleration Profile: CPU Fallback
   ollama-cpu:
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.40.4
     container_name: local-rag-ollama-cpu
     profiles: ["cpu"]
     ports:
@@ -89,7 +101,7 @@ services:
     restart: unless-stopped
 
   qdrant:
-    image: qdrant/qdrant:latest
+    image: qdrant/qdrant:v1.20.0
     container_name: local-rag-qdrant
     ports:
       - "6333:6333"

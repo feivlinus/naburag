@@ -1,6 +1,3 @@
-Here is the final, locked-in **`AGENTS.md` / `PROJECT_SPEC.md`** tailored specifically for **Bun** (`Bun.serve`, `Bun.sql`, native TypeScript execution), **React 19 + Vite + Tailwind CSS + shadcn/ui**, **Qdrant + PostgreSQL in Docker**, and **`bge-m3`** (with zero LangChain or Vercel SDK bloat).
-
-```markdown
 # Project Specification: Local Multi-Document RAG Pipeline (Bun + React + shadcn/ui + Qdrant + Postgres)
 
 ## 1. Goal & Overview
@@ -188,7 +185,7 @@ local-rag/
 ```bash
 # 1. Pull the multilingual embedding model in Ollama (and a local LLM if not using OpenRouter)
 ollama pull bge-m3
-ollama pull qwen2.5:7b-instruct
+ollama pull llama3.2
 
 # 2. Start Qdrant & Postgres in Docker
 bun run infra:up
@@ -204,5 +201,4 @@ bun run ingest                  # Ingest all files in data/docs/
 bun run ingest --force          # Force re-ingest all files
 bun run ask "Your question"     # Query from terminal
 bun run eval                    # Run the 10-question Golden Set evaluation
-```
 ```
